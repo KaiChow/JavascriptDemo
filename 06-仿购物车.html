@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .goods-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .goods-list > li {
+        background-image: linear-gradient(to top, gray 2%, transparent 3%);
+        background-position: 50% 0%;
+        background-size: 98% 100%;
+        background-repeat: no-repeat;
+      }
+
+      .goods-list > li {
+        padding: 1rem;
+        display: flex;
+        /** flex默认是不换行 */
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      /* 
+      只要设置了img的宽高，src中的图片就会依此压缩
+      但对于宽高比不一致的图片，直接就形变了
+      解决办法：套一层在外面，宽/高自适应，overflow: hidden，使用flex布局进行居中
+      */
+      .goods-img {
+        width: 5rem;
+        height: 5rem;
+        margin-right: 1rem;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .goods-img > img {
+        width: auto;
+        height: 100%;
+      }
+
+      .goods-desc {
+        flex-grow: 1;
+      }
+
+      .goods-name {
+        font-size: 130%;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .sale-volume {
+        color: gray;
+        margin-bottom: 0.5rem;
+      }
+
+      .goods-buy {
+        display: flex;
+        flex-wrap: wrap;
+        /** 让元素两边和父容器对齐 */
+        justify-content: space-between;
+      }
+
+      .sale-price {
+        /** 长度保持一致，当窗口大小改变时才能反应一致 */
+        width: 10rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .sale-price-now {
+        font-size: 140%;
+        color: red;
+      }
+
+      .sale-price-origin {
+        text-decoration: line-through;
+      }
+
+      .addto-cart {
+        color: white;
+        background-color: red;
+        border-radius: 5px;
+        padding: 0.5rem;
+        white-space: nowrap;
+        /** 绘制贝塞尔曲线的网站 http://cubic-bezier.com/ */
+        transition: width 1s ease, height 1s ease, border-radius 1s ease-in,
+          left 1s linear, top 1s cubic-bezier(0.28, -0.41, 0.54, 0.04);
+        text-align: center;
+      }
+
+      .addto-cart:hover {
+        background-color: #ba3537;
+      }
+
+      footer {
+        /**
+	fixed是相对于浏览器窗口进行定位，跟absolute一样也是绝对定位
+	但是它俩的参照物不同：
+	fixed参考的是浏览器窗口
+	absolute参考的是relative的祖先
+	*/
+        position: fixed;
+        box-shadow: 0 0 0.5rem gray;
+        width: 100%;
+        bottom: 0px;
+        background-color: white;
+      }
+
+      #shopCart {
+        display: inline-block;
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0.5rem;
+        cursor: pointer;
+      }
+
+      #goodsNum {
+        position: fixed;
+        left: 2rem;
+        bottom: 2rem;
+        display: inline-block;
+        color: white;
+        background-color: red;
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        text-align: center;
+        /** 避免它被动画挡住 */
+        z-index: 10;
+      }
+
+      .shake {
+        animation: shakeAnim 0.1s 4 alternate;
+      }
+
+      @keyframes shakeAnim {
+        from {
+          transform: rotate(20deg);
+        }
+
+        to {
+          transform: rotate(-20deg);
+        }
+      }
+
+      .scaleAndMove {
+        animation: scaleAndMoveAnim 0.2s 2 alternate;
+      }
+
+      @keyframes scaleAndMoveAnim {
+        from {
+          transform: scale(1);
+          left: 2rem;
+          bottom: 2rem;
+        }
+
+        to {
+          transform: scale(0);
+          left: 1.2rem;
+          bottom: 1.2rem;
+        }
+      }
+    </style>
+    <template id="template">
+      <div class="goods-img">
+        <img src="{{ src }}" />
+      </div>
+      <div class="goods-desc">
+        <div class="goods-name">{{ name }}</div>
+        <div class="sale-volume">月销 {{saleVolume}}</div>
+        <div class="goods-buy">
+          <div class="sale-price">
+            <span class="sale-price-now">￥{{price}}</span>
+            <span>/份&nbsp;</span>
+            <span class="sale-price-origin">￥{{priceOrigin}}/份&nbsp;</span>
+          </div>
+          <div
+            class="addto-cart"
+            data-id="{{id}}"
+            onclick="addToCart(event,{{id}})"
+          >
+            加入购物车
+          </div>
+        </div>
+      </div>
+    </template>
+    <script>
+      const data = {
+        data: [
+          {
+            id: '001',
+            name: '谷歌浏览器',
+            src: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3260362442,351141342',
+            saleVolume: 123,
+            price: 20,
+            priceOrigin: 999,
+          },
+          {
+            id: '002',
+            name: '搜狗浏览器',
+            src: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3710305442,2088471281',
+            saleVolume: 1,
+            price: 1,
+            priceOrigin: 6,
+          },
+          {
+            id: '003',
+            name: '火狐浏览器',
+            src: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3824766833,1967460780&fm=58&s=74F528722828EF3AC1BF94F50300C028',
+            saleVolume: 992,
+            price: 37,
+            priceOrigin: 666,
+          },
+          {
+            id: '004',
+            name: '简单搜索',
+            src: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2407325608,2146020119',
+            saleVolume: 500,
+            price: 25,
+            priceOrigin: 555,
+          },
+          {
+            id: '005',
+            name: 'UC浏览器',
+            src: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=252893326,2138469974',
+            saleVolume: 33,
+            price: 5,
+            priceOrigin: 88,
+          },
+        ],
+        delimiters: ['{{', '}}'],
+      }
+      String.prototype.trim = function () {
+        //该方法不改变原始字符串，并且返回一个新的字符串
+        return this.replace(/^\s*|\s*$/g, '')
+      }
+      function templateEngine(data, template, delimiters) {
+        /*
+不加入g，则只返回第一个匹配，无论执行多少次均是如此，
+如果加入g，则第一次执行也返回第一个匹配，再执行返回第二个匹配，依次类推
+i，表示忽略大小写 ignore
+m，表明可以进行多行匹配
+	
+\\s表示不可见字符
+\\S表示可见字符
+.等价于\\s|\\S
+	
+最长匹配(贪婪匹配)和最短匹配(懒惰匹配，在长度指示符后面加?)
+*/
+        const regStr = '(.+?)'
+        //const regStr = "(\\s*\\S+?\\s*)";
+        const reg = new RegExp(delimiters[0] + regStr + delimiters[1], 'g')
+        let str = template.innerHTML.replace(reg, function () {
+          /*
+  这里的RegExp是全局对象，RegExp.$1...$9是全局属性。
+  每次执行正则表达式操作，都会覆盖掉之前的存储数据
+  由于string.replace是先查找出所有之后，在一次性替换
+	
+  arguments的第一个参数是匹配模式的字符串。
+  接下来的参数是与模式中的子表达式匹配的字符串，可以有 0 个或多个这样的参数。
+  接下来的参数是一个整数，声明了匹配在 stringObject 中出现的位置。
+  最后一个参数是 stringObject 本身。
+	
+  chrome中RegExp.$1无法获取到值，只能通过arguments来得到值
+  firefox可以用RegExp获取子表达式的值
+  */
+          return data[(RegExp.$1 || arguments[1]).trim()]
+        })
+        return str
+      }
+      function addToCart(event, id) {
+        const target = event.target
+        const goodsNum = document.getElementById('goodsNum')
+        /*
+cloneNode 用于克隆节点，
+如果传递给它的参数是 true，它还将递归复制当前节点的所有子孙节点。
+否则，它只复制当前节点。
+*/
+        const cloneElem = event.target.cloneNode()
+        cloneElem.removeAttribute('onclick')
+        cloneElem.removeAttribute('data-id')
+        //getBoundingClientRect用于获取某个元素相对于视窗的位置集合。
+        const btnRect = target.getBoundingClientRect()
+        const goodsNumRect = goodsNum.getBoundingClientRect()
+        let style =
+          'position:fixed;top:' +
+          btnRect.top +
+          'px;left:' +
+          btnRect.left +
+          'px;'
+        style +=
+          'width:' + btnRect.width + 'px;height:' + btnRect.height + 'px;'
+        cloneElem.style = style
+        //注意事件名称的大小写，如果错了不会触发事件
+        cloneElem.addEventListener(
+          'transitionend',
+          onAddToCartAnimationEnd,
+          false
+        )
+        cloneElem.addEventListener(
+          'webkitTransitionEnd',
+          onAddToCartAnimationEnd,
+          false
+        )
+        document.body.appendChild(cloneElem)
+        /*
+//这里即使用了window.getComputedStyle，强制让style生效并重绘，在火狐上也不能保证动画一定被触发
+window.getComputedStyle(cloneElem);
+window.requestAnimationFrame(()=>{
+  cloneElem.textContent = "+1";
+  let style = "position:fixed;top:"+goodsNumRect.top+"px;left:"+goodsNumRect.left+"px;";
+  style += "border-radius:50%;width:1.5rem;height:1.5rem;padding:0;";
+  cloneElem.style = style;
+});*/
+        setTimeout(() => {
+          cloneElem.textContent = '+1'
+          let style =
+            'position:fixed;top:' +
+            goodsNumRect.top +
+            'px;left:' +
+            goodsNumRect.left +
+            'px;'
+          style += 'border-radius:50%;width:1.5rem;height:1.5rem;padding:0;'
+          cloneElem.style = style
+        }, 50)
+      }
+      function onAddToCartAnimationEnd(event) {
+        if (event.propertyName === 'left') {
+          animateShopCart()
+          //try {
+          document.body.removeChild(event.target)
+          addGoodsNum()
+          //} catch(err){console.error(err)};
+        }
+      }
+      function addGoodsNum() {
+        const goodsNum = document.getElementById('goodsNum')
+        let num = parseInt(goodsNum.textContent)
+        goodsNum.textContent = ++num
+      }
+      function animateShopCart() {
+        shopCart.className = 'shake'
+        goodsNum.className = 'scaleAndMove'
+      }
+      function onShopCartAnimationEnd() {
+        shopCart.className = ''
+        goodsNum.className = ''
+      }
+      window.onload = () => {
+        const template = document.getElementById('template')
+        const goodsList = document.getElementsByClassName('goods-list')[0]
+        const shopCart = document.getElementById('shopCart')
+        const goodsNum = document.getElementById('goodsNum')
+        for (const d of data.data) {
+          const li = document.createElement('li')
+          li.innerHTML = templateEngine(d, template, data.delimiters)
+          goodsList.appendChild(li)
+        }
+        //firefox和Edge均已支持AnimationEnd，但谷歌系列的还需加webkit
+        shopCart.addEventListener('animationend', onShopCartAnimationEnd, false)
+        shopCart.addEventListener(
+          'WebkitAnimationEnd',
+          onShopCartAnimationEnd,
+          false
+        )
+      }
+    </script>
+  </head>
+
+  <body>
+    <ul class="goods-list"></ul>
+    <footer>
+      <img
+        id="shopCart"
+        src="./imgs/love/love1.png"
+      />
+      <div id="goodsNum">0</div>
+    </footer>
+  </body>
+</html>
