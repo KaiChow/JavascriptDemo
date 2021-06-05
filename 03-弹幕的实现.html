@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .wrapper {
+        position: relative;
+        width: 900px;
+        height: 600px;
+        background-color: #f3d0d0;
+      }
+      .post-wrapper {
+        display: flex;
+        align-items: center;
+        margin: 40px 30px;
+      }
+      input {
+        outline: none;
+        border: 1px solid #f3d0d0;
+        height: 40px;
+        width: 400px;
+      }
+      button {
+        margin-left: 40px;
+        height: 40px;
+        width: 100px;
+        outline: none;
+        border: none;
+      }
+      .dan {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      .dan1 {
+        transition: transform 7s linear;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateX(700px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <span class="dan">测试速度</span>
+    </div>
+    <div class="post-wrapper">
+      <input type="text" id="msg" />
+      <button>发送</button>
+    </div>
+    <script>
+      //  弹幕的实现  简单的模拟
+      var wrapper = document.querySelector('.wrapper')
+
+      //  从左到右的移动
+      var dan = document.querySelector('.dan')
+      // 初始化的长度
+      var padLen = 0
+      var timer = null
+      timer = requestAnimationFrame(fn)
+      function fn() {
+        padLen = padLen - 2
+        // if (padLen < -800) return
+        dan.style.transform = `translateX(${padLen}px)`
+        timer = requestAnimationFrame(fn)
+      }
+    </script>
+  </body>
+</html>

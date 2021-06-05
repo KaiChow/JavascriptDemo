@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>this</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 浏览器默认环境
+       * this是一个指针 指向调用函数的对象
+       * 默认绑定  独立函数的调用  this指向window
+       * 隐式绑定  对象上触发 调用位置存在上下文对象  xx.fun()  对象属性连中只有最后一层会影响到调用位置
+       * 硬绑定 显示绑定  call,apply,bind的方式，显式的指定this所指向的对象
+       * new绑定  构造函数调用
+       *
+       * 如果return一个对象或者是function的话，this指向的是这个对象或者是function~
+       *
+       * 例外：
+       * 如果我们将null或者是undefined作为this的绑定对象传入call、apply或者是bind,这些值在调用时会被忽略，实际应用的是默认绑定规则。
+       *优先级：
+       * new绑定 > 显式绑定 > 隐式绑定 > 默认绑定
+       *
+       * 箭头函数没有自己的this，箭头函数中的this继承于外层代码库中的this.
+       */
+
+      var number = 5
+      var obj = {
+        number: 3,
+        fn: (function () {
+          console.log(this)
+          var number
+          this.number *= 2
+          number = number * 2
+          number = 3
+          return function () {
+            var num = this.number
+            this.number *= 2
+            console.log(num) //10
+            number *= 3
+            console.log(number) // 9
+          }
+        })(),
+      }
+
+      var myFun = obj.fn
+      console.log(myFun)
+      // myFun.call(null)
+      // obj.fn()
+      // console.log(window.number)
+    </script>
+  </body>
+</html>

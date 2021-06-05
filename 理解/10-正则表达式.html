@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <p>{{name}}</p>
+      <span>{{age}}</span>
+    </div>
+    <script>
+      //  正则表达式
+      //  1,使用方法
+
+      // 字面量
+      var re = /abc/
+      // 对象构造函数
+      var re = new RegExp('abc')
+
+      // 2,常用的元字符
+
+      /**
+        .  换行符之外的任意字符
+        \w  字母 数字下划线 汉字
+        \s  任意空白字符
+        \d  数字
+        \b  单词的开始或者结束
+        ^   开始
+        $   结束
+      */
+
+      //  3 重复
+      /**
+        *  0次  more
+        +  1次  more
+        ？  0 1
+        {n} n
+        {n,} n  more
+        {n,m}  n>m
+      */
+      /**
+      <div>
+        <p>{{name}}</p>
+        <span>{{age}}</span>
+      </div>
+      **/
+
+      //  nodeType  1 标签  2 属性节点  3 文本节点
+      var data = {
+        name: 'kevin',
+        age: 23,
+      }
+      var tpl = document.getElementById('app')
+      function complier(template, data) {
+        let nodes = template.childNodes
+        for (let i = 0; i < nodes.length; i++) {
+          if (nodes[i].nodeType === 1) {
+            // 标签节点
+            complier(nodes[i], data)
+          } else if (nodes[i].nodeType === 3) {
+            //  文本节点   正则匹配的文本节点的数字
+            // /\{\{(.+?)\}\}/g
+            var reg = /\{\{(.+?)\}\}/g
+            var t = nodes[i].nodeValue.replace(reg, '$1', (s) => {
+              return s + 1
+            })
+            console.log(t)
+          }
+        }
+      }
+      complier(tpl, data)
+    </script>
+  </body>
+</html>

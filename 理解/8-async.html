@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>async</title>
+</head>
+
+<body>
+  <script>
+    //  async   使用 async 关键字，把它放在函数声明之前，使其成为 async function。异步函数是一个知道怎样使用 await 关键字调用异步代码的函数。  数的返回值为 promise
+
+    /**
+     * 返回promise 好处
+     * 1，可以链式调用
+     * 2，避免了同步函数为支持使用 await 带来的任何潜在开销
+     */
+    function getMsg() {
+      return new Promise((resolve,reject)=>{
+        setTimeout(() => {
+          resolve(1)
+      }, 4000);
+      })
+    }
+    async function getMsg2(){
+      console.log(2);
+      let  a = await getMsg()
+      console.log(a);
+      console.log(3);
+    }
+    getMsg2()
+    //await  调用任何返回Promise的函数时使用 await  
+    /*****
+     * async/await 的优势在于处理 then 链
+     * await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来
+     */
+  </script>
+</body>
+
+</html>

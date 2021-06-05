@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>this的指向问题</title>
+  </head>
+  <body>
+    <script>
+      /**
+
+      在绝大多数情况下，函数的调用方式决定了 this 的值（运行时绑定）。this 不能在执行期间被赋值，
+      并且在每次函数被调用时 this 的值也可能会不同。ES5 引入了 bind 方法来设置函数的 this 值，而不用考虑函数如何被调用的。
+      定义：
+      当前执行上下文（global、function 或 eval）的一个属性，在非严格模式下，总是指向一个对象，在严格模式下可以是任意值。
+
+      1，全局上下文，无论是否在严格模式下，在全局执行环境中（在任何函数体外部）this 都指向全局对象。
+      2，函数上下文，在函数内部，this的值取决于函数被调用的方式。因为下面的代码不在严格模式下，且 this 的值不是由该调用设置的，所以 this 的值默认指向全局对象，在严格模式下，如果进入执行环境时没有设置 this 的值，this 会保持为 undefined，
+      3，类上下文：在类的构造函数中，this 是一个常规对象。类中所有非静态的方法都会被添加到 this 的原型中：
+      **/
+
+      class test {
+        constructor() {
+          const proto = Object.getPrototypeOf(this)
+          console.log(Object.getOwnPropertyNames(proto))
+        }
+
+        foo() {}
+        say() {}
+        static go() {}
+      }
+
+      new test()
+
+      //注意：静态方法不是 this 的属性，它们只是类自身的属性。
+      /**
+       * 在函数中this到底取何值，是在函数真正被调用执行的时候确定的，函数定义的时候确定不了，也就是说，this的指向完全取决于函数调用的位置
+       */
+
+      //1 浏览器环境中 this默认指向window，立即执行，定时器等函数  this指向window
+      console.log(this === window) // true
+      function fn() {
+        console.log(this === window)
+      }
+      fn()(
+        // true
+        function () {
+          console.log(this === window) // true
+        }
+      )()
+      setTimeout(function () {
+        console.log(this === window) //true
+      }, 500)
+
+      //2 对象函数中 函数作为对象的属性 this指向该对象
+      var x = 10 // 相当于 window.x = 10
+      var obj = {
+        x: 20,
+        f: function () {
+          console.log(this.x)
+        },
+        s: function () {
+          console.log(this.x) // 20
+          function fn() {
+            console.log(this.x)
+          }
+          return fn // 函数f虽然是在obj.fn内部定义的，但是它仍然是一个普通的函数，this仍然指向window
+        },
+      }
+      var fn = obj.f
+      fn() // 10
+      obj.f() // 20
+      obj.s()() // 10
+
+      // 3 构造函数中
+
+      // 4，箭头函数
+    </script>
+  </body>
+</html>
