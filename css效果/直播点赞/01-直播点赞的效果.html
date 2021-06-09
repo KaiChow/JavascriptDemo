@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>直播点赞</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      .wrapper {
+        position: relative;
+      }
+      .btn-like {
+        position: absolute;
+        right: 30px;
+        bottom: 10px;
+        background-image: url('./imgs/love/love-icon.png');
+        width: 3em;
+        outline: none;
+        border: none;
+        height: 3em;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+      .loves {
+        position: absolute;
+        bottom: 18px;
+        right: 34px;
+        width: 2em;
+        height: 2em;
+      }
+      .move1 {
+        position: absolute;
+        bottom: 0;
+        width: 2em;
+        height: 2em;
+        animation: moves1 2s linear;
+      }
+
+      .move2 {
+        position: absolute;
+        bottom: 0;
+        width: 2em;
+        height: 2em;
+        animation: moves1 2s linear;
+      }
+      .move3 {
+        position: absolute;
+        bottom: 0;
+        width: 2em;
+        height: 2em;
+        animation: moves3 2s linear;
+      }
+      .move4 {
+        position: absolute;
+        bottom: 0;
+        width: 2em;
+        height: 2em;
+        animation: moves4 2s linear;
+      }
+      @keyframes moves2 {
+        0% {
+          transform: translate(-5px, -15px) scale(0.5);
+        }
+        10% {
+          transform: translate(0px, -30px) scale(0.6);
+        }
+
+        20% {
+          transform: translate(5px, -45px) scale(0.7);
+        }
+
+        30% {
+          transform: translate(0px, -60px) scale(0.8);
+        }
+
+        40% {
+          transform: translate(-5px, -75px) scale(0.9);
+        }
+        50% {
+          transform: translate(0px, -90px) scale(1);
+        }
+        60% {
+          transform: translate(5px, -105px) scale(1);
+        }
+        70% {
+          transform: translate(0px, -120px) scale(1);
+        }
+        80% {
+          transform: translate(-5px, -135px) scale(1);
+        }
+        90% {
+          transform: translate(0px, -150px) scale(1);
+        }
+        100% {
+          transform: translate(5px, -165px) scale(0);
+        }
+      }
+      @keyframes moves3 {
+        0% {
+          transform: translate(0px, -20px) scale(0.5);
+        }
+        10% {
+          transform: translate(-15px, -40px) scale(0.6);
+        }
+
+        20% {
+          transform: translate(0px, -60px) scale(0.7);
+        }
+
+        30% {
+          transform: translate(15px, -80px) scale(0.8);
+        }
+
+        40% {
+          transform: translate(0px, -100px) scale(0.9);
+        }
+        50% {
+          transform: translate(-15px, -120px) scale(1);
+        }
+        60% {
+          transform: translate(0px, -140px) scale(1);
+        }
+        70% {
+          transform: translate(15px, -160px) scale(1);
+        }
+        80% {
+          transform: translate(0px, -180px) scale(1);
+        }
+        90% {
+          transform: translate(-15px, -200px) scale(1);
+        }
+        100% {
+          transform: translate(0px, -220px) scale(0);
+        }
+      }
+      @keyframes moves4 {
+        0% {
+          transform: translate(15px, -20px) scale(0.5);
+        }
+        10% {
+          transform: translate(0px, -40px) scale(0.6);
+        }
+
+        20% {
+          transform: translate(-15px, -60px) scale(0.7);
+        }
+
+        30% {
+          transform: translate(0px, -80px) scale(0.8);
+        }
+
+        40% {
+          transform: translate(15px, -100px) scale(0.9);
+        }
+        50% {
+          transform: translate(0px, -120px) scale(1);
+        }
+        60% {
+          transform: translate(-15px, -140px) scale(1);
+        }
+        70% {
+          transform: translate(0px, -160px) scale(1);
+        }
+        80% {
+          transform: translate(15px, -180px) scale(1);
+        }
+        90% {
+          transform: translate(0px, -200px) scale(1);
+        }
+        100% {
+          transform: translate(-15px, -220px) scale(0);
+        }
+      }
+      @keyframes moves1 {
+        0% {
+          transform: translate(-10px, -20px) scale(0.5);
+        }
+        10% {
+          transform: translate(0px, -40px) scale(0.6);
+        }
+
+        20% {
+          transform: translate(15px, -60px) scale(0.7);
+        }
+
+        30% {
+          transform: translate(0px, -80px) scale(0.8);
+        }
+
+        40% {
+          transform: translate(-15px, -100px) scale(0.9);
+        }
+        50% {
+          transform: translate(0px, -120px) scale(1);
+        }
+        60% {
+          transform: translate(15px, -140px) scale(1);
+        }
+        70% {
+          transform: translate(0px, -160px) scale(1);
+        }
+        80% {
+          transform: translate(-15px, -180px) scale(1);
+        }
+        90% {
+          transform: translate(0px, -200px) scale(1);
+        }
+        100% {
+          transform: translate(15px, -220px) scale(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <img src="./imgs/love/person.jpg" alt="" />
+      <div class="loves"></div>
+      <button class="btn-like"></button>
+    </div>
+
+    <script>
+      var btn = document.querySelector('.btn-like')
+      var loves = document.querySelector('.loves')
+
+      btn.onclick = function () {
+        createEle(loves)
+      }
+
+      function getRandomInt(min, max) {
+        min = Math.ceil(min)
+        max = Math.floor(max)
+        return Math.floor(Math.random() * (max - min)) + min //不含最大值，含最小值
+      }
+      function createEle(parnet) {
+        var imgsArr = [
+          './imgs/love/love1.png',
+          './imgs/love/love2.png',
+          './imgs/love/love4.png',
+          './imgs/love/love5.png',
+          './imgs/love/love3.png',
+          './imgs/love/love6.png',
+        ]
+
+        var moveClassArr = ['move1', 'move2', 'move3', 'move4']
+
+        var selectedSrc = imgsArr[getRandomInt(0, imgsArr.length)]
+
+        var selectedClass = moveClassArr[getRandomInt(0, moveClassArr.length)]
+
+        var node = document.createElement('img')
+
+        node.src = selectedSrc
+
+        parnet.appendChild(node)
+
+        requestAnimationFrame(() => {
+          node.className = selectedClass
+        })
+      }
+    </script>
+  </body>
+</html>

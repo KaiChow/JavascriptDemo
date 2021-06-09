@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .praise_bubble {
+        width: 100px;
+        height: 400px;
+        position: relative;
+        background-color: #f4f4f4;
+      }
+      .bubble {
+        position: absolute;
+        left: 50%;
+        margin-left: -15px;
+        bottom: 0;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+      }
+      .bl1 {
+        animation: bubble_y 4s linear 1 forwards,
+          bubble_big 0.5s linear 1 forwards, bubble_1 4s linear 1 forwards;
+      }
+
+      .bl2 {
+        animation: bubble_2 $bubble_time linear 0.4s 1 forwards,
+          bubble_big_2 $bubble_scale linear 0.4s 1 forwards,
+          bubble_y $bubble_time linear 0.4s 1 forwards;
+      }
+      @keyframes bubble_big {
+        0% {
+          transform: scale(0.3);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes bubble_y {
+        0% {
+          margin-bottom: 0;
+        }
+        75% {
+          opacity: 1;
+        }
+        100% {
+          margin-bottom: 400px;
+          opacity: 0;
+        }
+      }
+
+      @keyframes bubble_1 {
+        0% {
+        }
+        25% {
+          margin-left: -8px;
+        }
+        50% {
+          margin-left: 8px;
+        }
+        75% {
+          margin-left: -15px;
+        }
+        100% {
+          margin-left: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="praise_bubble">
+      <div class="bubble b1 bl1">
+        <img src="./imgs/love/love1.png" alt="" />
+      </div>
+    </div>
+  </body>
+</html>
