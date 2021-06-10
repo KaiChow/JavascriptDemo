@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>直播点赞</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      .wrapper {
+        position: relative;
+      }
+      .btn-like {
+        position: absolute;
+        right: 30px;
+        bottom: 10px;
+        background-image: url('./imgs/love/love-icon.png');
+        width: 3em;
+        outline: none;
+        border: none;
+        height: 3em;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+      .loves {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <img src="./imgs/love/person.jpg" alt="" />
+      <canvas id="mycanvas" class="loves"></canvas>
+      <button class="btn-like"></button>
+    </div>
+    <script>
+      window.onload = function () {
+        const images = [
+          'https://img12.360buyimg.com/img/jfs/t1/93992/8/9049/4680/5e0aea04Ec9dd2be8/608efd890fd61486.png',
+          'https://img12.360buyimg.com/img/jfs/t1/108305/14/2849/4908/5e0aea04Efb54912c/bfa59f27e654e29c.png',
+          'https://img12.360buyimg.com/img/jfs/t1/98805/29/8975/5106/5e0aea05Ed970e2b4/98803f8ad07147b9.png',
+          'https://img12.360buyimg.com/img/jfs/t1/94291/26/9105/4344/5e0aea05Ed64b9187/5165fdf5621d5bbf.png',
+          'https://img12.360buyimg.com/img/jfs/t1/102753/34/8504/5522/5e0aea05E0b9ef0b4/74a73178e31bd021.png',
+          'https://img12.360buyimg.com/img/jfs/t1/102954/26/9241/5069/5e0aea05E7dde8bda/720fcec8bc5be9d4.png',
+        ]
+
+        var mycanvas = document.getElementById('mycanvas')
+        var ctx = mycanvas.getContext('2d')
+        var img = new Image()
+        img.src = images[0]
+        console.log(img.width)
+        console.log(img.height)
+        img.onload = function () {
+          ctx.drawImage(img, 0, 0)
+        }
+      }
+    </script>
+  </body>
+</html>

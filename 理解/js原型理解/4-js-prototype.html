@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js-prototype</title>
+  </head>
+  <body>
+    <script>
+      // 下面是给person1和person2实例添加了同一个效果的方法sayHello
+      function Person() {}
+
+      var person1 = new Person()
+      var person2 = new Person()
+
+      person1.sayHello = function () {
+        console.log('Hello!')
+      }
+      person2.sayHello = function () {
+        console.log('Hello!')
+      }
+      console.log(person1.sayHello === person2.sayHello) // false，它们不是同一个方法，各自占有内存
+
+      /**
+       * 当需要为大量实例添加相同效果的方法时，可以将它们存放在prototype对象中，
+       * 并将该prototype对象放在这些实例的构造函数上，达到共享、公用的效果
+       */
+
+      // 因此
+
+      Person.prototype.sayHello1 = function () {
+        console.log('Hello!')
+      }
+      console.log(person1.sayHello1 === person2.sayHello1) // true，同一个方法
+
+      /**
+       * 总结：prototype对象用于放某同一类型实例的共享属性和方法，实质上是为了内存着想
+       */
+
+      person1.constructor = function () {}
+
+      console.log(person1) //Person {sayHello: ƒ, constructor: ƒ}
+
+      //  我们根本不能通过一个对象.constructor找回创建自己的构造函数（之间没有箭头链接）
+    </script>
+  </body>
+</html>

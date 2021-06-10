@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>prototype、__proto__与constructor</title>
+  </head>
+  <body>
+    <script>
+      /**
+            一、先理解为什么“函数即对象”
+            */
+
+      function Person() {}
+      console.log(Person.constructor) // 输出结果:[Function: Function]
+      // 上面是普通函数声明方法，生成具名函数，在声明时就已经生成对象模型。
+      console.log(Function.constructor) // 输出结果:[Function: Function]
+      console.log(Object.constructor) // 输出结果:[Function: Function]
+      /**
+       * 上面的代码构造了一个Person函数，我们能看出那些信息？Person虽被声明为一个函数，但它同样可以通过Person.constructor输出内容。输出内容说明Function函
+       * Person函数[普通声明的函数]的构造函数。Function函数同时是自己的构造函数。Function函数同样是Object这类内置对象的构造函数。其实上面三点总结下来就是一句
+       * 在JS里，函数就是Function函数的实例对象。也就是我们说的函数即对象。
+       */
+
+       //总结：对象由函数创建，函数都是Function对象实例。
+    </script>
+  </body>
+</html>
