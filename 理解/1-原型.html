@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>原型</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>原型</title>
-</head>
-
-<body>
-  <script>
-    /**
+  <body>
+    <script>
+      /**
       1，基于原型的语言  每个对象拥有一个原型对象  对象以其原型为模板从原型继承方法和属性，一层一层以此类推，这种关系被称作原型链。解释了对象拥有定义在其他对象的属性和方法，这些属性和方法定义在Object的构造器函数(constructor functions)之上的prototype属性上，而非对象实例本身。（Object.constructor.prototype）
 
       2，在对象实例和它的构造器之间建立一个链接（它是__proto__属性，是从构造函数的prototype属性派生的），之后通过上溯原型链，在构造器中找到这些属性和方法。
@@ -24,58 +23,53 @@
 *
 * **/
 
-    function Person(first, last, age, gender, interests) {
-      // 属性与方法定义
-    }
+      function Person(first, last, age, gender, interests) {
+        // 属性与方法定义
+      }
 
-    var person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing'])
+      var person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing'])
 
-    console.log(person1);
+      console.log(person1)
 
-    // 浏览器首先检查，person1 对象是否具有可用的 valueOf() 方法。
-    // 如果没有，则浏览器检查 person1 对象的原型对象（即 Person构造函数的prototype属性所指向的对象）是否具有可用的 valueof() 方法。
-    // 如果也没有，则浏览器检查 Person() 构造函数的prototype属性所指向的对象的原型对象（即 Object构造函数的prototype属性所指向的对象）是否具有可用的 valueOf() 方法。
-    // 这里有这个方法，于是该方法被调用。
+      // 浏览器首先检查，person1 对象是否具有可用的 valueOf() 方法。
+      // 如果没有，则浏览器检查 person1 对象的原型对象（即 Person构造函数的prototype属性所指向的对象）是否具有可用的 valueof() 方法。
+      // 如果也没有，则浏览器检查 Person() 构造函数的prototype属性所指向的对象的原型对象（即 Object构造函数的prototype属性所指向的对象）是否具有可用的 valueOf() 方法。
+      // 这里有这个方法，于是该方法被调用。
 
-    var person2 = Object.create(person1);
-    console.log(person2);
+      var person2 = Object.create(person1)
+      console.log(person2)
 
-    // new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象的实例。
+      // new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象的实例。
 
-    // new 关键字会进行如下的操作：
+      // new 关键字会进行如下的操作：
 
-    // 创建一个新对象
-    // 新对象继承了构造函数的原型
-    // 构造函数的this指向新对象, 并执行构造函数。
-    // 最后隐式的返回this, 即新对象。
+      // 创建一个新对象
+      // 新对象继承了构造函数的原型
+      // 构造函数的this指向新对象, 并执行构造函数。
+      // 最后隐式的返回this, 即新对象。
 
-    function Car(make, model, year) {
-      this.make = make;
-      this.model = model;
-      this.year = year;
-    }
+      function Car(make, model, year) {
+        this.make = make
+        this.model = model
+        this.year = year
+      }
 
+      const car1 = new Car('Eagle', 'Talon TSi', 1993)
 
-    const car1 = new Car('Eagle', 'Talon TSi', 1993);
+      console.log(car1)
 
-    console.log(car1);
+      // 模拟new的操作
 
+      function createNew(func, ...args) {
+        const obj = {}
+        //  方法设置一个指定的对象的原型 ( 即, 内部[[Prototype]]属性）到另一个对象或  null。
+        Object.setPrototypeOf(obj, func.prototype)
+        const result = func.apply(obj, args)
+        return result instanceof Object ? result : obj
+      }
 
-    // 模拟new的操作
-
-    function createNew(func, ...args) {
-      const obj = {}
-      //  方法设置一个指定的对象的原型 ( 即, 内部[[Prototype]]属性）到另一个对象或  null。
-      Object.setPrototypeOf(obj, func.prototype)
-      const result = func.apply(obj, args)
-      return result instanceof Object ? result : obj
-    }
-
-    const c = createNew(Car, 'Eagle', 'Talon TSi', 1993)
-    console.log(c);
-
-
-  </script>
-</body>
-
+      const c = createNew(Car, 'Eagle', 'Talon TSi', 1993)
+      console.log(c)
+    </script>
+  </body>
 </html>

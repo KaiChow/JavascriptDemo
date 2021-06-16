@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gennerator</title>
+  </head>
+
+  <body>
+    <script>
+      function* helloWorldGenerator() {
+        var c = yield function () {
+          return 99
+        }
+        yield 'world'
+        return c
+      }
+      var hw = helloWorldGenerator() // 返回遍历对象   内部是状态机
+
+      /**
+       *异步解决方案
+       * 说明：
+       * 基本是普通的函数
+       * 1，function 关键字加上*
+       * 2，内部的yield关键字
+       *
+       * 特点：
+       * 1，执行后返回的是指向内部状态的指针对象
+       * 2，Generator 函数是分段执行的，yield表达式是暂停执行的标记，而next方法可以恢复执行。
+       *
+       * 调用 Generator 函数，返回一个遍历器对象，代表 Generator 函数的内部指针。以后，每次调用遍历器对象的next方法，
+       * 就会返回一个有着value和done两个属性的对象。
+       * value属性表示当前的内部状态的值，是yield表达式后面那个表达式的值；
+       * done属性是一个布尔值，表示是否遍历结束。
+       */
+
+      console.log(hw.next())
+
+      function* gen(x) {
+        var y = yield x + 2
+        return y
+      }
+
+      var g = gen(3)
+
+      console.log(g.next())
+
+      function test(n) {
+        setTimeout(() => {
+          console.log(n)
+        }, 2000)
+        return n
+      }
+
+      function* genner() {
+        try {
+          r1 = yield test(1)
+          r2 = yield test(2)
+          r3 = yield test(3)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+      const numbersArray = [1, 2, 3]
+
+      let iterator = numbersArray[Symbol.iterator]()
+
+      console.log(iterator.next())
+
+      var obj = {
+        name: 'kevin',
+        age: 2,
+      }
+      console.dir(numbersArray) //  内置迭代器
+      console.dir(obj)
+
+      //  为啥 Object 没有迭代器   for of 无法迭代对象   for in可以
+
+      //  实现对象的迭代
+
+      Object.prototype[Symbol.iterator] = function* () {
+        for (const [key, value] of Object.entries(this)) {
+          yield { key, value }
+        }
+      }
+
+      for (const { key, value } of { a: 1, b: 2, c: 3 }) {
+        console.log(key, value)
+      }
+    </script>
+  </body>
+</html>

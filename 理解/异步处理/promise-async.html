@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+            1,promise是异步解决方案
+            */
+
+      // function fn(resolve) {
+      //   setTimeout(function () {
+      //     resolve('success')
+      //   }, 2000)
+      // }
+
+      // let p0 = new Promise(fn)
+      // console.log(p0)
+      // let p1 = Promise.resolve(p0)
+      // console.log(p1)
+      // // 返回为true，返回的 Promise 即是 入参的 Promise 对象。
+      // console.log(p0 === p1)
+
+      //  promise 静态方法
+
+      function fnReject(reject) {
+        setTimeout(function () {
+          reject('error')
+        }, 2000)
+      }
+
+      let p1 = new Promise((resolve) => {
+        setTimeout(function () {
+          resolve('success1')
+        }, 2000)
+      })
+      let p2 = new Promise((resolve) => {
+        setTimeout(function () {
+          resolve('success2')
+        }, 3000)
+      })
+      let p3 = new Promise((resolve, reject) => {
+        setTimeout(function () {
+          resolve('success3')
+        }, 4000)
+      })
+
+      /**
+       * Promise.all(iterable)  返回promise对象 全部成功才返回
+       */
+      // Promise.all([p1, p2, p3])
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //   })
+
+      /**
+       * Promise.allSettled(iterable)  返回promise对象 全部成功才返回   等到所有promises都已敲定（settled）（每个promise都已兑现（fulfilled）或已拒绝（rejected））。  返回每个promise的对象数组
+       *
+       */
+      // Promise.allSettled([p1, p2, p3]).then((res) => {
+      //   console.log(res[0]) //{status: "fulfilled", value: "success1"}
+      // })
+
+      //Promise.any(iterable)  任意一个成功
+
+      //Promise.race(iterable)  任意一个成功或失败
+
+      //       Promise.resolve(value)
+      // 返回一个状态由给定value决定的Promise对象。如果该值是thenable(即，带有then方法的对象)，返回的Promise对象的最终状态由then方法执行决定；否则的话(该value为空，基本类型或者不带then方法的对象),返回的Promise对象状态为fulfilled，并且将该value传递给对应的then方法。通常而言，如果您不知道一个值是否是Promise对象，使用Promise.resolve(value) 来返回一个Promise对象,这样就能将该value以Promise对象形式使用。
+    </script>
+  </body>
+</html>
