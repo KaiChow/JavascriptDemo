@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.dir(Promise)
+
+      // Promise.resolve(1).then(2).then(Promise.resolve(3)).then(console.log) //Promise的then方法的参数期望是函数，传入非函数则会发生值穿透。
+
+      /**
+       * Promise.resolve() 作用
+       * 现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用。
+       * Promise.resolve('foo')
+       * 等价于
+       * new Promise(resolve => resolve('foo'))
+       */
+
+      let p1 = Promise.resolve()
+        .then(() => {
+          console.log(0)
+          return Promise.resolve(4)
+        })
+        .then((res) => {
+          console.log(res)
+        })
+      console.log(p1)
+      let p2 = Promise.resolve()
+        .then(() => {
+          console.log(1)
+        })
+        .then(() => {
+          console.log(2)
+        })
+        .then(() => {
+          console.log(3)
+        })
+        .then(() => {
+          console.log(5)
+        })
+        .then(() => {
+          console.log(6)
+        })
+
+      // 大家先思考一下
+    </script>
+  </body>
+</html>

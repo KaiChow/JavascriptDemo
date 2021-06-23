@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 1. new Promise时，需要传递一个 executor 执行器，执行器立刻执行
+       * 2. executor 接受两个参数，分别是 resolve 和 reject
+       * 3. promise 只能从 pending 到 rejected, 或者从 pending 到 fulfilled
+       * 4. promise 的状态一旦确认，就不会再改变
+       * 5. promise 都有 then 方法，then 接收两个参数，分别是 promise 成功的回调 onFulfilled,
+       *      和 promise 失败的回调 onRejected
+       * 6. 如果调用 then 时，promise已经成功，则执行 onFulfilled，并将promise的值作为参数传递进去。
+       *      如果promise已经失败，那么执行 onRejected, 并将 promise 失败的原因作为参数传递进去。
+       *      如果promise的状态是pending，需要将onFulfilled和onRejected函数存放起来，等待状态确定后，再依次将对应的函数执行(发布订阅)
+       * 7. then 的参数 onFulfilled 和 onRejected 可以缺省
+       * 8. promise 可以then多次，promise 的then 方法返回一个 promise
+       * 9. 如果 then 返回的是一个结果，那么就会把这个结果作为参数，传递给下一个then的成功的回调(onFulfilled)
+       * 10. 如果 then 中抛出了异常，那么就会把这个异常作为参数，传递给下一个then的失败的回调(onRejected)
+       * 11.如果 then 返回的是一个promise,那么需要等这个promise，那么会等这个promise执行完，promise如果成功，
+       *   就走下一个then的成功，如果失败，就走下一个then的失败
+       */
+
+      // let p = new Promise((resolve, reject) => {})
+      // Promise.resolve()
+      //   .then(() => {
+      //     console.log(0)
+      //     return Promise.resolve(4)
+      //   })
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+      // Promise.resolve()
+      //   .then(() => {
+      //     console.log(1)
+      //   })
+      //   .then(() => {
+      //     console.log(2)
+      //   })
+      //   .then(() => {
+      //     console.log(3)
+      //   })
+      //   .then(() => {
+      //     console.log(5)
+      //   })
+      //   .then(() => {
+      //     console.log(6)
+      //   })
+      let p = Promise.resolve(2) //  返回一个Promise对象  fulfilled 状态
+      // console.log(p)
+
+      p.then((val) => {
+        // console.log(val)
+      })
+
+      let p2 = new Promise((resolve, reject) => {
+        // 没有resolve  pending状态
+        resolve(2)
+      })
+
+      // console.log(p2) //  promise 对象  状态为fulfilled
+
+      let p3 = Promise.resolve(p2) //  promise 对象  状态为fulfilled
+
+      // console.log(p3)
+
+      // let p4 = p3.then((val) => {
+      //   console.log(val)
+      //   return Promise.resolve(5)
+      // })
+
+      // console.log(p3)
+
+      // p3.then((val) => {
+      //   console.log(val)
+      // })
+      // p4.then((val) => {
+      //   console.log(val)
+      // })
+
+      // Promise.resolve()
+      //   .then(() => {
+      //     console.log(0)
+      //     let p = Promise.resolve(4)
+      //     console.log(p)
+      //     return p
+      //   })
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+
+      // Promise.resolve()
+      //   .then(() => {
+      //     console.log(1)
+      //   })
+      //   .then(() => {
+      //     console.log(2)
+      //   })
+      //   .then(() => {
+      //     console.log(3)
+      //   })
+      //   .then(() => {
+      //     console.log(5)
+      //   })
+      //   .then(() => {
+      //     console.log(6)
+      //   })
+
+      //  测试
+
+      let p11 = Promise.resolve()
+        .then(() => {
+          console.log(0)
+          let p = Promise.resolve(4)
+          // console.log(p)
+          return p
+        })
+        .then((res) => {
+          debugger
+          console.log(res)
+        })
+
+      console.log(p11)
+
+      p11.then((res) => {
+        console.log(res)
+      })
+
+      // console.log(p11)
+
+      let p22 = Promise.resolve()
+
+      p22.then(() => {
+        console.log(1)
+      })
+      p22.then(() => {
+        console.log(2)
+      })
+      p22.then(() => {
+        console.log(3)
+      })
+      p22.then(() => {
+        console.log(5)
+      })
+      p22.then(() => {
+        console.log(6)
+      })
+    </script>
+  </body>
+</html>
